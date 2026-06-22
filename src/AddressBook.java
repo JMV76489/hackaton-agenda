@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 
 public class AddressBook {
 
@@ -9,13 +10,13 @@ public class AddressBook {
 
     public AddressBook() {
         this.capacity = 10;
-        this.contacts = new ArrayList<>();
+        this.contacts = new ArrayList<Contact>();
     }
 
 
     public AddressBook(int capacity) {
         this.capacity = capacity;
-        this.contacts = new ArrayList<>();
+        this.contacts = new ArrayList<Contact>();
     }
     
 
@@ -63,6 +64,21 @@ public class AddressBook {
 
     public void searchContact(String name) {
 
+        List<Contact> filteredContacts = this.contacts.stream().filter(contact -> {
+
+            String fullName = (contact.getName() + " " + contact.getLastName()).toLowerCase();
+            String stringToSearch = name.toLowerCase();
+            Boolean containsName = fullName.contains(stringToSearch);
+
+            return containsName;
+        }).toList();
+
+        if (filteredContacts.isEmpty()) {
+            System.out.println("No se encontro el contacto");
+            return;
+        }
+        Contact found = filteredContacts.getFirst();
+        System.out.println(name + ": " + found.getPhoneNumber());
     }
 
     public void removeContact(Contact contact) {
@@ -89,6 +105,6 @@ public class AddressBook {
     }
 
     public int freeSpaces() {
-        return 0;
+        return this.capacity - contacts.size();
     }
 }
