@@ -30,8 +30,14 @@ public class AddressBook {
     }
 
     public boolean contactExists(Contact contact) {
-        return false;
-    }
+
+        for (Contact c : contacts) {
+
+            if (c.getName().equalsIgnoreCase(contact.getName()) &&
+                    c.getLastName().equalsIgnoreCase(contact.getLastName())) {
+
+                return true;
+            }
 
     public void listContacts() {
 
