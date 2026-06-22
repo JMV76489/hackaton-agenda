@@ -19,8 +19,8 @@ public class AddressBook {
 
 
     public void addContact(Contact contact) {
-        if (this.freeSpaces() == 0) {
-            System.out.println("Lista de contactos llena, no se pueden ingresar más");
+        if (this.isFull()) {
+            System.out.printf("Lista de contactos llena, no se pueden ingresar más (maximo %d contactos)\n",this.capacity);
             return;
         }
 
