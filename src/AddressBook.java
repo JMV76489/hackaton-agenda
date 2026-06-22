@@ -17,6 +17,7 @@ public class AddressBook {
         this.capacity = capacity;
         this.contacts = new ArrayList<>();
     }
+    
 
 
     public void addContact(Contact contact) {
