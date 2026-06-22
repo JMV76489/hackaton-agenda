@@ -3,6 +3,7 @@ import java.util.ArrayList;
 public class AddressBook {
 
 
+
     private ArrayList<Contact> contacts;
     private int capacity;
 
@@ -16,6 +17,7 @@ public class AddressBook {
         this.capacity = capacity;
         this.contacts = new ArrayList<>();
     }
+    
 
 
     public void addContact(Contact contact) {
@@ -37,6 +39,14 @@ public class AddressBook {
 
     public boolean contactExists(Contact contact) {
 
+        for (Contact c : contacts) {
+
+            if (c.getName().equalsIgnoreCase(contact.getName()) &&
+                    c.getLastName().equalsIgnoreCase(contact.getLastName())) {
+
+                return true;
+            }
+        }
 
         return false;
     }
@@ -75,7 +85,7 @@ public class AddressBook {
     }
 
     public boolean isFull() {
-        return false;
+        return contacts.size() >= capacity;
     }
 
     public int freeSpaces() {
