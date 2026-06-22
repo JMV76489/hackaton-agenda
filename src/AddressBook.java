@@ -71,6 +71,6 @@ public class AddressBook {
     }
 
     public int freeSpaces() {
-        return 10;
+        return 0;
     }
 }
