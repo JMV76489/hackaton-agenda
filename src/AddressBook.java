@@ -38,6 +38,10 @@ public class AddressBook {
 
                 return true;
             }
+        }
+
+        return false;
+    }
 
     public void listContacts() {
 
