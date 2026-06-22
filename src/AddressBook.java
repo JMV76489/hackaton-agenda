@@ -23,12 +23,20 @@ public class AddressBook {
     }
 
     public boolean contactExists(Contact contact) {
+
+
         return false;
     }
 
     public void listContacts() {
 
-    }
+        if (contacts.isEmpty()) {
+            System.out.println("No hay contactos registrados.");
+            return;
+        }// if
+
+        contacts.forEach(contact -> System.out.println(contact));
+    }// listContacts
 
     public void searchContact(String name) {
 
