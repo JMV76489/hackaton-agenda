@@ -3,6 +3,7 @@ import java.util.ArrayList;
 public class AddressBook {
 
 
+
     private ArrayList<Contact> contacts;
     private int capacity;
 
@@ -19,7 +20,13 @@ public class AddressBook {
 
 
     public void addContact(Contact contact) {
+        if (isFull()) {
+            System.out.println("Agenda llena, no se pueden agregar más contactos (máximo 10).");
+            return;
+        }
 
+        contacts.add(contact);
+        System.out.println("Contacto agregado.");
     }
 
     public boolean contactExists(Contact contact) {
@@ -43,7 +50,7 @@ public class AddressBook {
     }
 
     public boolean isFull() {
-        return false;
+        return contacts.size() >= capacity;
     }
 
     public int freeSpaces() {
