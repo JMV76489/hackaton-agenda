@@ -93,11 +93,11 @@ public class AddressBook {
         for (Contact curContact : contacts) {
             if (curContact.getName().equals(name) && curContact.getLastName().equals(lastName)) {
                 curContact.setPhoneNumber(newPhone);
-                System.out.printf("No se encontró contacto %s %s\n", name, lastName);
+                System.out.printf("Número de teléfono cambiado correctamente\n", name, lastName);
                 return;
             }
         }
-        System.out.printf("Número de teléfono cambiado correctamente\n", name, lastName);
+        System.out.printf("No se encontró contacto %s %s\n", name, lastName);
     }
 
     public boolean isFull() {
