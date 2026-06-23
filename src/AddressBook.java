@@ -84,6 +84,7 @@ public class AddressBook {
     public void removeContact(Contact contact) {
         if(!this.contacts.removeIf(curContact -> curContact.getName().equals(contact.getName()) && curContact.getLastName().equals(contact.getLastName()))){
             System.out.printf("No se encontró contacto %s %s\n",contact.getName(),contact.getLastName());
+            return;
         }
 
         System.out.printf("Contacto %s %s eliminado correctamente\n",contact.getName(),contact.getLastName());
