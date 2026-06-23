@@ -8,37 +8,54 @@ public class Contact {
         this.name = name;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
-    }// Contact
+    }
 
     public String getName() {
         return name;
-    }// getName
+    }
 
     public void setName(String name) {
         this.name = name;
-    }// setName
+    }
 
     public String getLastName() {
         return lastName;
-    }// getLastName
+    }
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }// setLastName
+    }
 
     public String getPhoneNumber() {
         return phoneNumber;
-    }// getPhoneNumber
+    }
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }// setPhoneNumber
+    }
 
     @Override
     public String toString() {
-        return "Contact{name='" + name +
-                "', lastName='" + lastName +
-                "', phoneNumber='" + phoneNumber + "'}";
-    }// toString
+        return String.format("%-15s %-15s %-15s",
+                name,
+                lastName,
+                phoneNumber);
+    }
 
-}// class Contact
+    @Override
+    public boolean equals(Object obj) {
+
+        if (this == obj) return true;
+        if (!(obj instanceof Contact)) return false;
+
+        Contact other = (Contact) obj;
+
+        return name.equalsIgnoreCase(other.name)
+                && lastName.equalsIgnoreCase(other.lastName);
+    }
+
+    @Override
+    public int hashCode() {
+        return (name + lastName).toLowerCase().hashCode();
+    }
+}
