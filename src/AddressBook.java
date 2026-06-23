@@ -1,55 +1,42 @@
 import java.util.ArrayList;
-import java.util.List;
 
 public class AddressBook {
-
-
 
     private ArrayList<Contact> contacts;
     private int capacity;
 
     public AddressBook() {
-        this.capacity = 10;
-        this.contacts = new ArrayList<Contact>();
+        this(10);
     }
-
 
     public AddressBook(int capacity) {
         this.capacity = capacity;
-        this.contacts = new ArrayList<Contact>();
+        this.contacts = new ArrayList<>();
     }
-    
-
 
     public void addContact(Contact contact) {
-        if (this.isFull()) {
-            System.out.printf("Lista de contactos llena, no se pueden ingresar más (maximo %d contactos)\n",this.capacity);
+
+        if (isFull()) {
+            System.out.println("La agenda está llena.");
             return;
         }
 
-        for (Contact curContact : this.contacts) {
-            if (curContact.getName().equals(contact.getName()) && curContact.getLastName().equals(contact.getLastName())) {
-                System.out.printf("Contacto %s %s ya se encuentra registrado\n", contact.getName(), contact.getLastName());
-                return;
-            }
+        if (contact.getName().trim().isEmpty() || contact.getLastName().trim().isEmpty()) {
+            System.out.println("Nombre y apellido no pueden estar vacíos.");
+            return;
+        }
+
+        if (contactExists(contact)) {
+            System.out.println("El contacto ya existe.");
+            return;
         }
 
         contacts.add(contact);
-        System.out.println("Contacto registrado correctamente");
+        System.out.println("Contacto agregado correctamente.");
     }
 
     public boolean contactExists(Contact contact) {
-
-        for (Contact c : contacts) {
-
-            if (c.getName().equalsIgnoreCase(contact.getName()) &&
-                    c.getLastName().equalsIgnoreCase(contact.getLastName())) {
-
-                return true;
-            }
-        }
-
-        return false;
+        return contacts.stream().anyMatch(c -> c.equals(contact));
     }
 
     public void listContacts() {
@@ -57,47 +44,62 @@ public class AddressBook {
         if (contacts.isEmpty()) {
             System.out.println("No hay contactos registrados.");
             return;
-        }// if
-
-        contacts.forEach(contact -> System.out.println(contact));
-    }// listContacts
-
-    public void searchContact(String name) {
-
-        List<Contact> filteredContacts = this.contacts.stream().filter(contact -> {
-
-            String fullName = (contact.getName() + " " + contact.getLastName()).toLowerCase();
-            String stringToSearch = name.toLowerCase();
-            Boolean containsName = fullName.contains(stringToSearch);
-
-            return containsName;
-        }).toList();
-
-        if (filteredContacts.isEmpty()) {
-            System.out.println("No se encontro el contacto");
-            return;
         }
-        Contact found = filteredContacts.getFirst();
-        System.out.println(name + ": " + found.getPhoneNumber());
+
+        System.out.println("====================================");
+
+        contacts.stream()
+                .sorted((c1, c2) -> {
+                    int nombre = c1.getName()
+                            .compareToIgnoreCase(c2.getName());
+
+                    if (nombre == 0) {
+                        return c1.getLastName()
+                                .compareToIgnoreCase(c2.getLastName());
+                    }
+
+                    return nombre;
+                })
+                .forEach(c -> System.out.println(
+                        c.getName() + " " + c.getLastName() + " - " + c.getPhoneNumber()
+                ));
+    }
+
+    public void searchContact(String name, String lastName) {
+
+        contacts.stream()
+                .filter(c -> c.getName().equalsIgnoreCase(name)
+                        && c.getLastName().equalsIgnoreCase(lastName))
+                .findFirst()
+                .ifPresentOrElse(
+                        c -> System.out.println("Teléfono: " + c.getPhoneNumber()),
+                        () -> System.out.println("Contacto no encontrado.")
+                );
     }
 
     public void removeContact(Contact contact) {
-        if(!this.contacts.removeIf(curContact -> curContact.getName().equals(contact.getName()) && curContact.getLastName().equals(contact.getLastName()))){
-            System.out.printf("No se encontró contacto %s %s\n",contact.getName(),contact.getLastName());
-        }
 
-        System.out.printf("Contacto %s %s eliminado correctamente\n",contact.getName(),contact.getLastName());
+        boolean removed = contacts.removeIf(c -> c.equals(contact));
+
+        System.out.println(removed
+                ? "Contacto eliminado."
+                : "Contacto no encontrado.");
     }
 
     public void updatePhone(String name, String lastName, String newPhone) {
-        for (Contact curContact : contacts) {
-            if (curContact.getName().equals(name) && curContact.getLastName().equals(lastName)) {
-                curContact.setPhoneNumber(newPhone);
-                System.out.printf("Número de teléfono cambiado correctamente\n", name, lastName);
+
+        for (Contact c : contacts) {
+
+            if (c.getName().equalsIgnoreCase(name)
+                    && c.getLastName().equalsIgnoreCase(lastName)) {
+
+                c.setPhoneNumber(newPhone);
+                System.out.println("Teléfono actualizado correctamente.");
                 return;
             }
         }
-        System.out.printf("No se encontró contacto %s %s\n", name, lastName);
+
+        System.out.println("Contacto no encontrado.");
     }
 
     public boolean isFull() {
@@ -105,6 +107,6 @@ public class AddressBook {
     }
 
     public int freeSpaces() {
-        return this.capacity - contacts.size();
+        return capacity - contacts.size();
     }
 }
